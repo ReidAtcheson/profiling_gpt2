@@ -83,11 +83,11 @@ sudo env "PATH=$PATH" ncu --section ComputeWorkloadAnalysis --csv trtexec --load
 
 
 # References
-https://developer.nvidia.com/nvidia-development-tools-solutions-err_nvgpuctrperm-permission-issue-performance-counters
-https://docs.nvidia.com/nsight-systems/2020.3/profiling/index.html#cli-profiling
-https://docs.nvidia.com/nsight-visual-studio-edition/nvtx/index.html
-https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html
-https://huggingface.co/transformers/v4.4.2/model_doc/gpt2.html#gpt2lmheadmodel
-https://huggingface.co/transformers/v4.4.2/glossary.html#position-ids
-https://huggingface.co/transformers/v4.4.2/pretrained_models.html
-https://pytorch.org/docs/stable/onnx.html#torch.onnx.export
+ * https://developer.nvidia.com/nvidia-development-tools-solutions-err_nvgpuctrperm-permission-issue-performance-counters
+ * https://docs.nvidia.com/nsight-systems/2020.3/profiling/index.html#cli-profiling
+ * https://docs.nvidia.com/nsight-visual-studio-edition/nvtx/index.html
+ * https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html
+ * https://huggingface.co/transformers/v4.4.2/model_doc/gpt2.html#gpt2lmheadmodel
+ * https://huggingface.co/transformers/v4.4.2/glossary.html#position-ids
+ * https://huggingface.co/transformers/v4.4.2/pretrained_models.html
+ * https://pytorch.org/docs/stable/onnx.html#torch.onnx.export
