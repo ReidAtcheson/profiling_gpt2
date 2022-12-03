@@ -91,3 +91,4 @@ sudo env "PATH=$PATH" ncu --section ComputeWorkloadAnalysis --csv trtexec --load
  * https://huggingface.co/transformers/v4.4.2/glossary.html#position-ids
  * https://huggingface.co/transformers/v4.4.2/pretrained_models.html
  * https://pytorch.org/docs/stable/onnx.html#torch.onnx.export
+ * https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview#
