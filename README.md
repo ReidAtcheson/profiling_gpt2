@@ -86,3 +86,4 @@ sudo env "PATH=$PATH" ncu --section ComputeWorkloadAnalysis --csv trtexec --load
 https://developer.nvidia.com/nvidia-development-tools-solutions-err_nvgpuctrperm-permission-issue-performance-counters
 https://docs.nvidia.com/nsight-systems/2020.3/profiling/index.html#cli-profiling
 https://docs.nvidia.com/nsight-visual-studio-edition/nvtx/index.html
+https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html
