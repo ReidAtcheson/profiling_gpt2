@@ -155,27 +155,38 @@ sqlite3 -csv report2.sqlite '.header on' 'SELECT names.value AS name, * FROM CUP
 ```python
 import pandas as pd
 df=pd.read_csv("kernels.csv")
-counters=pd.read_csv("sol.csv")
-occupancy=pd.read_csv("occupancy.csv")
-d={}
-for name,metric,value in zip(counters["Kernel Name"],counters["Metric Name"],counters["Metric Value"]):
-    if name in d:
-        if metric in d[name]:
-            d[name][metric]=value
+launch=pd.read_csv("combined.csv")
+
+#Create a (kernel,grid_dim,block_dim) mapping to desired perf counters
+d=[]
+metrics=["Memory [%]","Compute (SM) [%]","Block Size","Grid Size","Theoretical Occupancy","Achieved Occupancy"]
+for name,metric,value in zip(launch["Kernel Name"],launch["Metric Name"],launch["Metric Value"]):
+    if metric in metrics:
+        if d and name==d[-1]["kernel"] and metric in d[-1]:
+            d.append({ "kernel" : name, metric : value})
+        elif d and name==d[-1]["kernel"] and (metric not in d[-1]):
+            d[-1][metric]=value
         else:
-            d[name][metric]=value
-    else:
-        d[name] = {metric : value}
-for name,metric,value in zip(occupancy["Kernel Name"],occupancy["Metric Name"],occupancy["Metric Value"]):
-    if name in d:
-        if metric in d[name]:
-            d[name][metric]=value
-        else:
-            d[name][metric]=value
+            d.append({ "kernel" : name, metric : value})
+
+
+for x in d:
+    x["Block Size"]=int(x["Block Size"].replace(',',''))
+    x["Grid Size"]=int(x["Grid Size"].replace(',',''))
+
+#Kernel launch parameter mapping
+kernel={}
+for x in d:
+    kernel[(x["kernel"],x["Grid Size"],x["Block Size"])] = {metric : x[metric] for metric in metrics}
+d=kernel
+
+#Add counters to sys trace
 f=open("trace.json","w")
 f.write("[")
 last=len(df["name"])
-for i,(name,start,stop) in enumerate(zip(df["name"],df["start"],df["stop"])):
+for i,(name,start,stop,gx,gy,gz,bx,by,bz) in enumerate(zip(df["name"],df["start"],df["end"],df["gridX"],df["gridY"],df["gridZ"],df["blockX"],df["blockY"],df["blockZ"])):
+    g=gx*gy*gz
+    b=bx*by*bz
     start=start/1000
     stop=stop/1000
     json=f"""{{
@@ -206,7 +217,7 @@ for i,(name,start,stop) in enumerate(zip(df["name"],df["start"],df["stop"])):
     "ph": "C", 
     "ts":  {start}, 
     "args": {{
-        "Memory [%]":  {d[name]["Memory [%]"]}
+        "Memory [%]":  {d[(name,g,b)]["Memory [%]"]}
         }}
     }},
     """
@@ -216,17 +227,17 @@ for i,(name,start,stop) in enumerate(zip(df["name"],df["start"],df["stop"])):
     "ph": "C", 
     "ts":  {start}, 
     "args": {{
-        "Memory [%]":  {d[name]["Compute (SM) [%]"]}
+        "Memory [%]":  {d[(name,g,b)]["Compute (SM) [%]"]}
         }}
     }},
     """
-   counter3=f"""{{
+    counter3=f"""{{
     "pid" : "Theoretical Occupancy",
     "name": "Theoretical Occupancy",
     "ph": "C", 
     "ts":  {start}, 
     "args": {{
-        "Memory [%]":  {d[name]["Theoretical Occupancy"]}
+        "Memory [%]":  {d[(name,g,b)]["Theoretical Occupancy"]}
         }}
     }},
     """
@@ -236,7 +247,7 @@ for i,(name,start,stop) in enumerate(zip(df["name"],df["start"],df["stop"])):
     "ph": "C", 
     "ts":  {start}, 
     "args": {{
-        "Memory [%]":  {d[name]["Achieved Occupancy"]}
+        "Memory [%]":  {d[(name,g,b)]["Achieved Occupancy"]}
         }}
     }}{"" if i==last-1 else ","}
     """
@@ -249,13 +260,12 @@ for i,(name,start,stop) in enumerate(zip(df["name"],df["start"],df["stop"])):
     f.write(counter2)
     f.write(counter3)
     f.write(counter4)
-
                                                      
 ```
 
 The resulting file can be opened with `chrome://tracing` and looks something like below:
+![image](https://user-images.githubusercontent.com/2857424/205513906-b7218fa6-94fd-41d8-91ae-05ef85711522.png)
 
-![image](https://user-images.githubusercontent.com/2857424/205469424-401f45a2-3d28-4a73-ba7d-ae09fabb5d4c.png)
 
 # Converting ONNX to Intel inference engine via Openvino
 
