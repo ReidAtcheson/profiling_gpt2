@@ -101,6 +101,25 @@ trtexec --onnx=simple_model.onnx --fp16 --saveEngine=gpt2_fp16.engine --profilin
 [12/04/2022-02:01:36] [I] Explanations of the performance metrics are printed in the verbose logs.
 ```
 
+and for batch=4
+
+```
+[12/04/2022-16:01:30] [I] === Trace details ===
+[12/04/2022-16:01:30] [I] Trace averages of 10 runs:
+[12/04/2022-16:01:30] [I] Average on 10 runs - GPU latency: 109.465 ms - Host latency: 150.216 ms (enqueue 109.535 ms)
+[12/04/2022-16:01:30] [I] Average on 10 runs - GPU latency: 109.648 ms - Host latency: 150.398 ms (enqueue 109.716 ms)
+[12/04/2022-16:01:30] [I] Average on 10 runs - GPU latency: 109.736 ms - Host latency: 150.489 ms (enqueue 109.808 ms)
+[12/04/2022-16:01:30] [I] 
+[12/04/2022-16:01:30] [I] === Performance summary ===
+[12/04/2022-16:01:30] [I] Throughput: 8.99216 qps
+[12/04/2022-16:01:30] [I] Latency: min = 149.995 ms, max = 150.684 ms, mean = 150.367 ms, median = 150.45 ms, percentile(90%) = 150.575 ms, percentile(95%) = 150.608 ms, percentile(99%) = 150.684 ms
+[12/04/2022-16:01:30] [I] Enqueue Time: min = 109.32 ms, max = 110.001 ms, mean = 109.686 ms, median = 109.741 ms, percentile(90%) = 109.9 ms, percentile(95%) = 109.944 ms, percentile(99%) = 110.001 ms
+[12/04/2022-16:01:30] [I] H2D Latency: min = 0.0478516 ms, max = 0.0544434 ms, mean = 0.0525426 ms, median = 0.052597 ms, percentile(90%) = 0.0535278 ms, percentile(95%) = 0.0536499 ms, percentile(99%) = 0.0544434 ms
+[12/04/2022-16:01:30] [I] GPU Compute Time: min = 109.25 ms, max = 109.932 ms, mean = 109.616 ms, median = 109.68 ms, percentile(90%) = 109.823 ms, percentile(95%) = 109.866 ms, percentile(99%) = 109.932 ms
+[12/04/2022-16:01:30] [I] D2H Latency: min = 40.689 ms, max = 40.7388 ms, mean = 40.6985 ms, median = 40.6956 ms, percentile(90%) = 40.7089 ms, percentile(95%) = 40.7117 ms, percentile(99%) = 40.7388 ms
+
+```
+
 # Getting nsight systems trace
 
 For the trace I did the following 
