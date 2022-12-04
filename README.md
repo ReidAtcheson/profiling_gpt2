@@ -307,3 +307,11 @@ Latency:
  * https://stackoverflow.com/questions/66626185/how-do-i-get-my-kernel-execution-times-from-the-sqlite3-output-of-nsight-systems
  * https://docs.openvino.ai/latest/openvino_docs_MO_DG_Deep_Learning_Model_Optimizer_DevGuide.html
  * https://www.intel.com/content/www/us/en/develop/documentation/ei4amr-2022-3-developer-guide/top/tutorials-amr/benchmark_profiling/run-openvino-benchmarking-tool.html
+
+
+
+# Extra images
+
+![image](https://user-images.githubusercontent.com/2857424/205519969-86fd064a-98b6-4d19-aae1-967f694fb4b6.png)
+![image](https://user-images.githubusercontent.com/2857424/205521974-ef3db27b-88c2-4cbe-96c6-17d5689051bc.png)
+
