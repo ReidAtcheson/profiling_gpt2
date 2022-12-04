@@ -143,10 +143,10 @@ These can be combined into a single csv file with the following invocation (it j
 sudo env "PATH=$PATH" ncu --section LaunchStats  --section Occupancy --section SpeedOfLight --csv trtexec --loadEngine=gpt2_fp32.engine --iterations=1 > combined.csv
 ```
 
-# Extracting kernels and start,stop times from nsys systems trace sqlite file
+# Extracting kernels and start,stop times from nsys systems trace file
 
 ```
-sqlite3 -csv report2.sqlite 'SELECT names.value AS name, start, end FROM CUPTI_ACTIVITY_KIND_KERNEL AS k JOIN StringIds AS names ON k.demangledName = names.id;' > kernels.csv
+sqlite3 -csv report2.sqlite '.header on' 'SELECT names.value AS name, * FROM CUPTI_ACTIVITY_KIND_KERNEL AS k JOIN StringIds AS names ON k.demangledName = names.id;' > kernels.csv
 ```
 
 # Combining perf counters and kernels into a single trace file
