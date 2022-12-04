@@ -235,6 +235,21 @@ mo --input_model simple_model.onnx
 
 makes the engine
 
+# Benchmarking OpenVino engine
+```
+benchmark_app -m simple_model.xml -hint latency -ip f32 -op f32 -report_type detailed_counters
+```
+
+
+```
+Latency:
+    Median:     2101.50 ms
+    AVG:        2100.02 ms
+    MIN:        2085.78 ms
+    MAX:        2126.31 ms
+
+```
+
 
 
 
