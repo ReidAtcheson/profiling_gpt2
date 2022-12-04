@@ -137,6 +137,12 @@ sudo env "PATH=$PATH" ncu --section SpeedOfLight --csv trtexec --loadEngine=gpt2
 sudo env "PATH=$PATH" ncu --section Occupancy --csv trtexec --loadENgine=gpt2_fp32.engine > occupancy.csv
 ```
 
+These can be combined into a single csv file with the following invocation (it just takes longer)
+
+```
+sudo env "PATH=$PATH" ncu --section LaunchStats  --section Occupancy --section SpeedOfLight --csv trtexec --loadEngine=gpt2_fp32.engine --iterations=1 > combined.csv
+```
+
 # Extracting kernels and start,stop times from nsys systems trace sqlite file
 
 ```
