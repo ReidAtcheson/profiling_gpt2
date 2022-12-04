@@ -238,3 +238,4 @@ The resulting file can be opened with `chrome://tracing` and looks something lik
  * https://pytorch.org/docs/stable/onnx.html#torch.onnx.export
  * https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview#
  * https://stackoverflow.com/questions/66626185/how-do-i-get-my-kernel-execution-times-from-the-sqlite3-output-of-nsight-systems
+ * https://docs.openvino.ai/latest/openvino_docs_MO_DG_Deep_Learning_Model_Optimizer_DevGuide.html
