@@ -65,6 +65,8 @@ trtexec --onnx=simple_model.onnx --saveEngine=gpt2_fp32.engine --profilingVerbos
 trtexec --onnx=simple_model.onnx --fp16 --saveEngine=gpt2_fp16.engine --profilingVerbosity=detailed --workspace=30000
 ```
 
+
+
 # Basic timings with trtexec
 
 `trtexec --loadEngine=gpt2_fp32.engine --useCudaGraph`
@@ -225,6 +227,16 @@ The resulting file can be opened with `chrome://tracing` and looks something lik
 
 ![image](https://user-images.githubusercontent.com/2857424/205469424-401f45a2-3d28-4a73-ba7d-ae09fabb5d4c.png)
 
+# Converting ONNX to Intel inference engine via Openvino
+
+```
+mo --input_model simple_model.onnx 
+```
+
+makes the engine
+
+
+
 
 
 # References
@@ -239,3 +251,4 @@ The resulting file can be opened with `chrome://tracing` and looks something lik
  * https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview#
  * https://stackoverflow.com/questions/66626185/how-do-i-get-my-kernel-execution-times-from-the-sqlite3-output-of-nsight-systems
  * https://docs.openvino.ai/latest/openvino_docs_MO_DG_Deep_Learning_Model_Optimizer_DevGuide.html
+ * https://www.intel.com/content/www/us/en/develop/documentation/ei4amr-2022-3-developer-guide/top/tutorials-amr/benchmark_profiling/run-openvino-benchmarking-tool.html
