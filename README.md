@@ -65,6 +65,35 @@ trtexec --onnx=simple_model.onnx --saveEngine=gpt2_fp32.engine --profilingVerbos
 trtexec --onnx=simple_model.onnx --fp16 --saveEngine=gpt2_fp16.engine --profilingVerbosity=detailed --workspace=30000
 ```
 
+# Basic timings with trtexec
+
+`trtexec --loadEngine=gpt2_fp32.engine --useCudaGraph`
+
+```
+[12/04/2022-02:01:36] [I] === Trace details ===
+[12/04/2022-02:01:36] [I] Trace averages of 10 runs:
+[12/04/2022-02:01:36] [I] Average on 10 runs - GPU latency: 31.0561 ms - Host latency: 41.2429 ms (enqueue 0.151791 ms)
+[12/04/2022-02:01:36] [I] Average on 10 runs - GPU latency: 31.0865 ms - Host latency: 41.274 ms (enqueue 0.148151 ms)
+[12/04/2022-02:01:36] [I] Average on 10 runs - GPU latency: 31.0933 ms - Host latency: 41.2813 ms (enqueue 0.149274 ms)
+[12/04/2022-02:01:36] [I] Average on 10 runs - GPU latency: 31.0886 ms - Host latency: 41.2748 ms (enqueue 0.137341 ms)
+[12/04/2022-02:01:36] [I] Average on 10 runs - GPU latency: 31.0964 ms - Host latency: 41.2835 ms (enqueue 0.13833 ms)
+[12/04/2022-02:01:36] [I] Average on 10 runs - GPU latency: 31.0831 ms - Host latency: 41.2698 ms (enqueue 0.155908 ms)
+[12/04/2022-02:01:36] [I] Average on 10 runs - GPU latency: 31.086 ms - Host latency: 41.2733 ms (enqueue 0.140601 ms)
+[12/04/2022-02:01:36] [I] Average on 10 runs - GPU latency: 31.0899 ms - Host latency: 41.2763 ms (enqueue 0.148071 ms)
+[12/04/2022-02:01:36] [I] Average on 10 runs - GPU latency: 31.0868 ms - Host latency: 41.2747 ms (enqueue 0.151758 ms)
+[12/04/2022-02:01:36] [I] 
+[12/04/2022-02:01:36] [I] === Performance summary ===
+[12/04/2022-02:01:36] [I] Throughput: 31.8446 qps
+[12/04/2022-02:01:36] [I] Latency: min = 41.1393 ms, max = 41.3042 ms, mean = 41.273 ms, median = 41.2759 ms, percentile(90%) = 41.2895 ms, percentile(95%) = 41.2952 ms, percentile(99%) = 41.3042 ms
+[12/04/2022-02:01:36] [I] Enqueue Time: min = 0.120361 ms, max = 0.22583 ms, mean = 0.148609 ms, median = 0.146973 ms, percentile(90%) = 0.173096 ms, percentile(95%) = 0.180908 ms, percentile(99%) = 0.22583 ms
+[12/04/2022-02:01:36] [I] H2D Latency: min = 0.00842285 ms, max = 0.0283203 ms, mean = 0.0102436 ms, median = 0.00927734 ms, percentile(90%) = 0.012207 ms, percentile(95%) = 0.0171509 ms, percentile(99%) = 0.0283203 ms
+[12/04/2022-02:01:36] [I] GPU Compute Time: min = 30.9525 ms, max = 31.1133 ms, mean = 31.0858 ms, median = 31.0886 ms, percentile(90%) = 31.104 ms, percentile(95%) = 31.1082 ms, percentile(99%) = 31.1133 ms
+[12/04/2022-02:01:36] [I] D2H Latency: min = 10.1726 ms, max = 10.1826 ms, mean = 10.1769 ms, median = 10.1768 ms, percentile(90%) = 10.1783 ms, percentile(95%) = 10.1787 ms, percentile(99%) = 10.1826 ms
+[12/04/2022-02:01:36] [I] Total Host Walltime: 3.10885 s
+[12/04/2022-02:01:36] [I] Total GPU Compute Time: 3.0775 s
+[12/04/2022-02:01:36] [I] Explanations of the performance metrics are printed in the verbose logs.
+```
+
 # Getting nsight systems trace
 
 For the trace I did the following 
