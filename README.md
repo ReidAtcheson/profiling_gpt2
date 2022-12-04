@@ -2,10 +2,15 @@
 Some tools and workflow I used to profile gpt2 model from huggingface checkpoint
 
 
-# Cloud instance and image used
+# Cloud instances and image used
 
 I used a prebaked nvidia image on GCP with an nvidia A100 - screengrab below
 ![image](https://user-images.githubusercontent.com/2857424/205463692-38331e38-8865-4db6-97c8-4c5fadaa1f78.png)
+
+and for an Intel machine I used the following:
+
+![image](https://user-images.githubusercontent.com/2857424/205472894-263240f2-d6c5-4adf-aee3-46e9c1717cf2.png)
+
 
 
 # Model & checkpoint used and conversion to onnx
