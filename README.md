@@ -77,9 +77,121 @@ nsys profile --trace=cuda,cudnn,cublas,osrt,nvtx trtexec --iterations=1 --loadEn
 To get performance counters I did
 
 ```
-sudo env "PATH=$PATH" ncu --section ComputeWorkloadAnalysis --csv trtexec --loadEngine=gpt2_fp32.engine | tee out.csv
+sudo env "PATH=$PATH" ncu --section ComputeWorkloadAnalysis --csv trtexec --loadEngine=gpt2_fp32.engine > cwa.csv
+sudo env "PATH=$PATH" ncu --section SpeedOfLight --csv trtexec --loadEngine=gpt2_fp32.engine > sol.csv
+sudo env "PATH=$PATH" ncu --section Occupancy --csv trtexec --loadENgine=gpt2_fp32.engine > occupancy.csv
 ```
 
+# Extracting kernels and start,stop times from nsys systems trace sqlite file
+
+```
+sqlite3 -csv report2.sqlite 'SELECT names.value AS name, start, end FROM CUPTI_ACTIVITY_KIND_KERNEL AS k JOIN StringIds AS names ON k.demangledName = names.id;' > kernels.csv
+```
+
+# Combining perf counters and kernels into a single trace file
+
+
+```python
+import pandas as pd
+df=pd.read_csv("kernels.csv")
+counters=pd.read_csv("sol.csv")
+occupancy=pd.read_csv("occupancy.csv")
+d={}
+for name,metric,value in zip(counters["Kernel Name"],counters["Metric Name"],counters["Metric Value"]):
+    if name in d:
+        if metric in d[name]:
+            d[name][metric]=value
+        else:
+            d[name][metric]=value
+    else:
+        d[name] = {metric : value}
+for name,metric,value in zip(occupancy["Kernel Name"],occupancy["Metric Name"],occupancy["Metric Value"]):
+    if name in d:
+        if metric in d[name]:
+            d[name][metric]=value
+        else:
+            d[name][metric]=value
+f=open("trace.json","w")
+f.write("[")
+last=len(df["name"])
+for i,(name,start,stop) in enumerate(zip(df["name"],df["start"],df["stop"])):
+    start=start/1000
+    stop=stop/1000
+    json=f"""{{
+    "name": "{name}", 
+    "cat": "foo", 
+    "ph": "B",
+    "ts": {start},
+    "pid": 1,
+    "tid": 1,
+         "args": {{
+        "first": 1
+     }}
+    }},
+    {{
+    "ph": "E", 
+    "ts": {stop},
+    "pid": 1, 
+    "tid": 1,
+     "args": {{
+       "first": 4,
+       "second": 2
+     }}
+    }},
+    """
+    counter1=f"""{{
+    "pid" : "Memory [%]",
+    "name": "Memory [%]", 
+    "ph": "C", 
+    "ts":  {start}, 
+    "args": {{
+        "Memory [%]":  {d[name]["Memory [%]"]}
+        }}
+    }},
+    """
+    counter2=f"""{{
+    "pid" : "Compute (SM) [%]",
+    "name": "Compute (SM) [%]",
+    "ph": "C", 
+    "ts":  {start}, 
+    "args": {{
+        "Memory [%]":  {d[name]["Compute (SM) [%]"]}
+        }}
+    }},
+    """
+   counter3=f"""{{
+    "pid" : "Theoretical Occupancy",
+    "name": "Theoretical Occupancy",
+    "ph": "C", 
+    "ts":  {start}, 
+    "args": {{
+        "Memory [%]":  {d[name]["Theoretical Occupancy"]}
+        }}
+    }},
+    """
+    counter4=f"""{{
+    "pid" : "Achieved Occupancy",
+    "name": "Achieved Occupancy",
+    "ph": "C", 
+    "ts":  {start}, 
+    "args": {{
+        "Memory [%]":  {d[name]["Achieved Occupancy"]}
+        }}
+    }}{"" if i==last-1 else ","}
+    """
+
+
+
+
+    f.write(json)
+    f.write(counter1)
+    f.write(counter2)
+    f.write(counter3)
+    f.write(counter4)
+
+                                                       
+
+```
 
 
 # References
