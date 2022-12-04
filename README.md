@@ -189,9 +189,13 @@ for i,(name,start,stop) in enumerate(zip(df["name"],df["start"],df["stop"])):
     f.write(counter3)
     f.write(counter4)
 
-                                                       
-
+                                                     
 ```
+
+The resulting file can be opened with `chrome://tracing` and looks something like below:
+
+![image](https://user-images.githubusercontent.com/2857424/205469424-401f45a2-3d28-4a73-ba7d-ae09fabb5d4c.png)
+
 
 
 # References
